@@ -1,1 +1,3 @@
-export default function Comp({ }) { return (<></>) }
+export default function Comp() {
+  return null;
+}
