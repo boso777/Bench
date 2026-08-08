@@ -4,6 +4,7 @@ import {
   faMicrochip,
   faPlus,
 } from "@fortawesome/free-solid-svg-icons";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import CardHome from "@/components/CardHome";
@@ -17,10 +18,10 @@ export default async function Home() {
 
   // Fetch dei dati da Supabase
   const { data: projects } = await supabase.from("projects").select("*");
-  const { data: components } = await supabase.from("components").select("*");
+  const { data: component } = await supabase.from("Component").select("*");
 
   const projectCount = projects?.length || 0;
-  const componentCount = components?.length || 0;
+  const componentCount = component?.length || 0;
 
   return (
     <div className="p-4 sm:p-8 lg:p-12 max-w-7xl mx-auto w-full">

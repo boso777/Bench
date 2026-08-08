@@ -14,7 +14,7 @@ export default function ModalButton() {
             {/* Bottone di apertura */}
             <button
                 onClick={() => setIsOpen(true)}
-                className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-medium px-5 py-2.5 rounded-xl shadow-lg shadow-indigo-950/30 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 cursor-pointer"
+                className="inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-indigo-600 text-white font-medium px-5 py-2.5 rounded-sm shadow-lg shadow-indigo-950/30 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 cursor-pointer"
             >
 
                 <FontAwesomeIcon icon={faPlus} /> <span>Aggiungi progetto</span>
