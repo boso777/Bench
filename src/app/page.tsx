@@ -9,12 +9,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import CardHome from "@/components/CardHome";
 import Card from "@/components/card";
-import { createClient } from "@/utils/supabase/client";
-import Button from "@/components/ModalButton";
-import ModalButton from "@/components/ModalButton";
+import { createClient } from "@/utils/supabase/server";
+import CreateProjectModal from "@/components/CreateProjectModal";
+import CreateProjectFormLoader from "@/components/CreateProjectFormLoader";
 
 export default async function Home() {
-  const supabase = createClient();
+  const supabase = await createClient();
 
   // Fetch dei dati da Supabase
   const { data: projects } = await supabase.from("projects").select("*");
@@ -36,19 +36,21 @@ export default async function Home() {
             Il tuo spazio di lavoro per la progettazione elettronica
           </p>
         </div>
-        <ModalButton />
+        <CreateProjectModal>
+          <CreateProjectFormLoader />
+        </CreateProjectModal>
       </header>
 
       {/* KPI / Stats Section */}
       <section className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
         <CardHome
           title="Progetti Totali"
-          totalProjects={projectCount.toString()}
+          totalProjects={projectCount}
           icon={faFolderOpen}
         />
         <CardHome
           title="Componenti"
-          totalProjects={componentCount.toString()}
+          totalProjects={componentCount}
           icon={faMicrochip}
         />
       </section>

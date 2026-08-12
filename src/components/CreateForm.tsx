@@ -3,10 +3,9 @@
 import { useState } from 'react'
 import { createClient } from '@/utils/supabase/client'
 
-export default function ImageUploadForm() {
-    const supabase = createClient()
+export default function CreateForm() {
 
-    const [file, setFile] = useState(null)
+    const [file, setFile] = useState<File | null>(null)
     const [uploading, setUploading] = useState(false)
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -51,12 +50,11 @@ export default function ImageUploadForm() {
     }
 
     return (
-
-        setFile(e.target.files?.[0] || null)}
-      />
-
-{ uploading ? 'Caricamento in corso...' : 'Invia' }
-      
-    
-  )
+        <form onSubmit={handleSubmit}>
+            <input type="file" onChange={(e) => setFile(e.target.files?.[0] || null)} />
+            <button type="submit" disabled={uploading}>
+                {uploading ? 'Caricamento in corso...' : 'Invia'}
+            </button>
+        </form>
+    )
 }

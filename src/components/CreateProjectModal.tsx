@@ -1,16 +1,21 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, createContext } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
-import ModalFormCreate from './ModalFormCreate'
 
-export default function ModalButton() {
+export const CreateProjectModalContext = createContext<{
+    setIsOpen: (isOpen: boolean) => void
+}>({
+    setIsOpen: () => {}
+})
+
+export default function CreateProjectModal({ children }: { children: React.ReactNode }) {
 
     const [isOpen, setIsOpen] = useState(false)
 
     return (
-        <>
+        <CreateProjectModalContext.Provider value={{ setIsOpen }}>
             {/* Bottone di apertura */}
             <button
                 onClick={() => setIsOpen(true)}
@@ -21,10 +26,7 @@ export default function ModalButton() {
             </button>
 
             {/* Modale */}
-            {isOpen && (
-                <ModalFormCreate setIsOpen={setIsOpen}></ModalFormCreate>
-
-            )}
-        </>
+            {isOpen && children}
+        </CreateProjectModalContext.Provider>
     )
 }

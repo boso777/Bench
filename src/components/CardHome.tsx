@@ -7,7 +7,7 @@ export default function CardHome({
   icon,
 }: {
   title: string;
-  totalProjects: string;
+  totalProjects: number;
   icon: IconDefinition;
 }) {
   return (

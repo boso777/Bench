@@ -1,18 +1,31 @@
 'use client'
 
+import { useContext } from "react"
 import { useForm, SubmitHandler } from "react-hook-form"
 import { createClient } from "@/utils/supabase/client"
 import { useRouter } from "next/navigation"
+import { CreateProjectModalContext } from "./CreateProjectModal"
 
-// 1. Tipizzazione dei campi del Form
+type ComponentType = {
+    id: number
+    created_at: string
+    Name: string
+    Category: string
+    Cost: number
+    Cover_img: string
+    Datasheet: string | null
+}
+
 type FormInputs = {
     title: string
     description: string
     state: "non iniziato" | "iniziato" | "completato"
     image: FileList
+    components: string[]
 }
 
-export default function ModalFormCreate({ setIsOpen }: { setIsOpen: (open: boolean) => void }) {
+export default function CreateProjectForm({ componenti }: { componenti: ComponentType[] }) {
+    const { setIsOpen } = useContext(CreateProjectModalContext)
     const router = useRouter()
 
     // 2. Inizializzazione di React Hook Form
@@ -22,7 +35,8 @@ export default function ModalFormCreate({ setIsOpen }: { setIsOpen: (open: boole
         formState: { errors, isSubmitting },
     } = useForm<FormInputs>({
         defaultValues: {
-            state: "non iniziato"
+            state: "non iniziato",
+            components: []
         }
     })
 
@@ -54,16 +68,37 @@ export default function ModalFormCreate({ setIsOpen }: { setIsOpen: (open: boole
             coverImgUrl = publicUrl;
         }
 
-        const { error } = await supabase.from("projects").insert({
-            title: data.title,
-            description: data.description,
-            state: data.state,
-            cover_img: coverImgUrl || null,
-        });
+        const { data: newProject, error } = await supabase
+            .from("projects")
+            .insert({
+                title: data.title,
+                description: data.description,
+                state: data.state,
+                cover_img: coverImgUrl || null,
+            })
+            .select("id")
+            .single();
 
-        if (error) {
-            alert("Errore nella creazione del progetto: " + error.message);
+        if (error || !newProject) {
+            alert("Errore nella creazione del progetto: " + (error?.message || "Impossibile recuperare l'ID del progetto"));
             return;
+        }
+
+        // Inserimento dei componenti nella tabella pivot
+        if (data.components && data.components.length > 0) {
+            const pivotData = data.components.map((compId) => ({
+                project_id: newProject.id,
+                component_id: Number(compId),
+            }));
+
+            const { error: pivotError } = await supabase
+                .from("projects_components")
+                .insert(pivotData);
+
+            if (pivotError) {
+                alert("Errore nell'associazione dei componenti: " + pivotError.message);
+                return;
+            }
         }
 
         router.refresh(); // Ricarica la pagina per mostrare il nuovo progetto
@@ -123,6 +158,28 @@ export default function ModalFormCreate({ setIsOpen }: { setIsOpen: (open: boole
                             {...register("image")}
                             className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-slate-100 focus:outline-none focus:border-indigo-500 text-sm file:mr-4 file:py-1 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-indigo-600/20 file:text-indigo-400 hover:file:bg-indigo-600/30"
                         />
+                    </div>
+
+                    {/* Componenti Checklist */}
+                    <div>
+                        <label className="block text-sm font-medium text-slate-400 mb-1">Componenti</label>
+                        {componenti.length > 0 ? (
+                            <div className="grid grid-cols-2 gap-2 max-h-32 overflow-y-auto bg-slate-950 p-3 rounded-lg border border-slate-800">
+                                {componenti.map((comp) => (
+                                    <label key={comp.id} className="flex items-center gap-2 text-slate-300 text-sm cursor-pointer hover:text-white">
+                                        <input
+                                            type="checkbox"
+                                            value={comp.id}
+                                            {...register("components")}
+                                            className="rounded border-slate-800 bg-slate-900 text-indigo-600 focus:ring-indigo-500"
+                                        />
+                                        <span>{comp.Name}</span>
+                                    </label>
+                                ))}
+                            </div>
+                        ) : (
+                            <p className="text-slate-500 text-xs italic">Nessun componente disponibile</p>
+                        )}
                     </div>
 
                     {/* Azioni */}
