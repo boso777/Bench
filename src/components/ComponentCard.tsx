@@ -12,11 +12,11 @@ export type Component = {
     Datasheet: string | null;
 };
 
-export default function ItemCard({ item }: { item: Component }) {
-    const code = `XC-${String(item.id).padStart(4, "0")}`;
+export default function ComponentCard({ item }: { item: Component }) {
+    const code = `${String(item.id).padStart(4, "0")}`;
 
     return (
-        <div className="m-6 group relative flex flex-col w-[30%] h-full overflow-hidden rounded-2xl bg-slate-900 border border-slate-800/80 shadow-lg shadow-black/40 transition-all duration-300 hover:border-slate-700 hover:shadow-xl hover:shadow-amber-500/5">
+        <div className="group relative flex flex-col w-[30%] h-full overflow-hidden rounded-2xl bg-slate-900 border border-slate-800/80 shadow-lg shadow-black/40 transition-all duration-300 hover:shadow-xl hover:shadow-amber-500/5">
 
             {/* --- MEDIA COVER --- */}
             <div className="relative h-40 w-full overflow-hidden bg-slate-950 border-b border-slate-800/60">
@@ -27,6 +27,7 @@ export default function ItemCard({ item }: { item: Component }) {
                         fill
                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                         className="object-cover transition-transform duration-500 group-hover:scale-105"
+                        loading="eager"
                     />
                 ) : (
                     <div className="flex h-full w-full items-center justify-center text-slate-700 text-xs font-mono">
@@ -59,12 +60,12 @@ export default function ItemCard({ item }: { item: Component }) {
                 <div className="flex items-start justify-between gap-3">
                     <h3 className="font-sans text-sm font-semibold leading-snug text-slate-100 group-hover:text-white transition-colors line-clamp-2">
                         {item.Name}
+
                     </h3>
-                    <div className="shrink-0 text-right">
-                        <span className="inline-block font-mono text-xs font-bold text-amber-400 bg-amber-950/30 border border-amber-800/40 px-2 py-0.5 rounded-md">
-                            {item.Cost} pt
-                        </span>
-                    </div>
+                    <span className="inline-block font-mono text-xs font-bold text-blue-400 bg-blue-950/30 border border-blue-800/40 px-2 py-0.5 rounded-md">
+                        {item.Cost} €
+                    </span>
+
                 </div>
 
                 {/* --- FOOTER: DATASHEET LINK --- */}

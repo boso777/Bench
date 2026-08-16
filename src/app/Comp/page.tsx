@@ -1,5 +1,5 @@
-import CardComp from "@/components/CardComp";
-import { createClient } from "@/utils/supabase/server";
+import ComponentCard from "@/components/ComponentCard";
+import { createClient } from "@/utils/supabase/client";
 
 export default async function Comp() {
   const supabase = await createClient();
@@ -10,10 +10,12 @@ export default async function Comp() {
 
   if (error) console.error("Errore fetch:", error);
 
+
+
   return (
     <>
       {componenti?.map((component) => (
-        <CardComp key={component.id} item={component} />
+        <ComponentCard key={component.id} item={component} />
       ))}
     </>
   );
