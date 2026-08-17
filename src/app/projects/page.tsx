@@ -1,4 +1,4 @@
-import Card from "@/components/card";
+import ProjectCard from "@/components/ProjectCard";
 import { createClient } from "@/utils/supabase/client";
 
 export default async function Projects() {
@@ -19,7 +19,7 @@ export default async function Projects() {
       {/* Griglia/Flex progetti centrata */}
       <div className="flex w-full flex-row flex-wrap justify-center gap-6 ">
         {projects?.map((project) => (
-          <Card
+          <ProjectCard
             key={project.id}
             title={project.title}
             description={project.description}

@@ -8,7 +8,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import CardHome from "@/components/CardHome";
-import Card from "@/components/card";
+import Card from "@/components/ProjectCard";
 import { createClient } from "@/utils/supabase/server";
 import CreateProjectModal from "@/components/CreateProjectModal";
 import CreateProjectFormLoader from "@/components/CreateProjectFormLoader";

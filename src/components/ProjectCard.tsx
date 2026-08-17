@@ -10,7 +10,7 @@ interface CardProps {
   img?: string;
 }
 
-export default function Card({ id, title, description, img }: CardProps) {
+export default function ProjectCard({ id, title, description, img }: CardProps) {
   return (
     <div className="w-full max-w-md mx-auto group bg-slate-850/40 border border-slate-800 rounded-lg p-5 hover:border-slate-600/50 hover:bg-slate-800/30 transition-all duration-300 flex flex-col justify-between">
       <div>

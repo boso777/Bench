@@ -86,7 +86,7 @@ export default function Sidebar() {
             </Link>
 
             <Link
-              href="/Comp"
+              href="/comp"
               onClick={closeMenu}
               className="flex justify-center items-center text-center hover:text-blue-200 hover:scale-105 transition-all duration-200 bg-blue-950 rounded-xl py-4 px-6 text-lg text-slate-200 border border-slate-800"
             >
@@ -134,7 +134,7 @@ export default function Sidebar() {
           </Link>
 
           <Link
-            href="/Comp"
+            href="/comp"
             className="flex justify-center items-center text-center hover:text-blue-200 hover:scale-110 transition-all duration-200 bg-blue-950 rounded-md py-2 px-5 mx-6 text-base text-slate-200"
           >
             <p>Components</p>

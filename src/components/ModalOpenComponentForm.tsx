@@ -4,6 +4,7 @@ import { useState } from "react";
 import CreateComponentForm from "./CreateComponentForm";
 
 export default function ModalOpenComponentForm() {
+
     const [isOpen, setIsOpen] = useState(false);
 
     const toggleModal = () => setIsOpen(!isOpen);
