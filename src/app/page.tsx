@@ -25,13 +25,13 @@ export default function welcome() {
 
   switch (activeForm) {
     case 0:
-      return void
+      return null
       break;
     case 1:
-      return LoginForm
+      return <LoginForm />
       break;
     case 2:
-      return RegisterForm
+      return <RegisterForm />
       break;
   }
 
