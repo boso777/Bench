@@ -4,6 +4,7 @@ import { redirect } from 'next/navigation'
 import { createClient } from '@/utils/supabase/server'
 
 export async function register(formData: FormData) {
+
   const supabase = await createClient()
 
   // 1. Prendi i dati inseriti nel form

@@ -1,9 +1,11 @@
-import { register } from './actions'
+import { register } from './actionRegister'
+import { createClient } from "@/utils/supabase/client";
 
-export default function RegisterPage() {
+export default async function RegisterForm() {
+
     return (
-        <main style={{ padding: '2rem' }}>
-            <h1>Crea un account</h1>
+        <div>
+            <h1>Accedi al tuo account</h1>
 
             <form action={register}>
                 <div>
@@ -16,8 +18,8 @@ export default function RegisterPage() {
                     <input id="password" name="password" type="password" required />
                 </div>
 
-                <button type="submit">Registrati</button>
+                <button type="submit">Accedi</button>
             </form>
-        </main>
+        </div>
     )
 }
