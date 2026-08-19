@@ -1,10 +1,11 @@
 'use client'
 
-import { useContext } from "react"
+import { useContext, useEffect, useState } from "react"
 import { useForm, SubmitHandler } from "react-hook-form"
 import { createClient } from "@/utils/supabase/client"
 import { useRouter } from "next/navigation"
 import { CreateProjectModalContext } from "./CreateProjectModal"
+import { User } from "@supabase/supabase-js"
 
 type ComponentType = {
     id: number
@@ -25,8 +26,24 @@ type FormInputs = {
 }
 
 export default function CreateProjectForm({ componenti }: { componenti: ComponentType[] }) {
+
     const { setIsOpen } = useContext(CreateProjectModalContext)
     const router = useRouter()
+
+    const supabase = createClient();
+
+    const [user, setUser] = useState<User | null>(null)
+
+    useEffect(() => {
+        const fetchUser = async () => {
+            const { data } = await supabase.auth.getUser();
+            if (data.user) {
+                setUser(data.user);
+            }
+        };
+        fetchUser();
+    }, []);
+
 
     // 2. Inizializzazione di React Hook Form
     const {
@@ -42,8 +59,11 @@ export default function CreateProjectForm({ componenti }: { componenti: Componen
 
     // 3. Gestione del submit
     const onSubmit: SubmitHandler<FormInputs> = async (data) => {
-        const supabase = createClient();
+
         let coverImgUrl = "";
+
+
+
 
         // Caricamento dell'immagine di copertina su Supabase Storage
         if (data.image && data.image.length > 0) {
@@ -75,6 +95,7 @@ export default function CreateProjectForm({ componenti }: { componenti: Componen
                 description: data.description,
                 state: data.state,
                 cover_img: coverImgUrl || null,
+                user_id: user.id,
             })
             .select("id")
             .single();
