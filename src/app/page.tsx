@@ -8,23 +8,36 @@ import RegisterForm from "@/components/auth/RegisterForm";
 export default function welcome() {
 
   const [isOpen, setIsOpen] = useState(false);
-  const [register, setRegister] = useState(null);
-  const [login, setLogin] = useState(null);
+  const [activeForm, setActiveForm] = useState(0);
+
 
   const opener = (() => {
     if (!isOpen) {
       setIsOpen(true)
       console.log(isOpen)
     } else {
-      setIsOpen(true)
+      setIsOpen(false)
       console.log(isOpen)
     }
   })
 
-  if (isOpen) {
-    setRegister(<RegisterForm />)
-    setLogin(<LoginForm />)
+
+
+  switch (activeForm) {
+    case 0:
+      return void
+      break;
+    case 1:
+      return LoginForm
+      break;
+    case 2:
+      return RegisterForm
+      break;
   }
+
+
+
+
 
   return (
     <>
@@ -36,10 +49,10 @@ export default function welcome() {
 
         <div className="flex align-middle justify-center gap-6 m-6">
           <div className="flex border-amber-50 border-solid">
-            <button onClick={opener}>Login</button>
+            <button onClick={setActiveForm(1)} >Login</button>
           </div>
           <div className="flex border-amber-50 border-solid">
-            <button onClick={opener}>Register</button>
+            <button onClick={setActiveForm(2)} >Register</button>
           </div>
         </div>
 
@@ -50,7 +63,7 @@ export default function welcome() {
         </div>
 
 
-      </div>
+      </div >
     </>
   )
 }
