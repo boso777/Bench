@@ -1,19 +1,33 @@
-import { register } from './actionRegister'
-import { createClient } from "@/utils/supabase/client";
+'use client'
 
-export default async function RegisterForm() {
+import { register } from './actionRegister'
+
+import { useAuth } from '../../app/context/AuthContext'
+
+export default function RegisterForm() {
+
+
+    const { activeForm, setActiveForm } = useAuth();
 
     return (
-        <div>
-            <h1>Accedi al tuo account</h1>
+        <div className='fixed inset-0 z-50 flex items-center justify-center p-4 backdrop-blur-2xl bg-black/30 flex flex-col'>
+
+
+
 
             <form action={register}>
-                <div>
+
+                <div className='flex align-middle justify-between'>
+                    <p>Accedi al tuo account</p>
+                    <button onClick={() => { setActiveForm(0) }}>X</button>
+
+                </div>
+                <div className='flex gap-6'>
                     <label htmlFor="email">Email</label>
                     <input id="email" name="email" type="email" required />
                 </div>
 
-                <div>
+                <div className='flex gap-6'>
                     <label htmlFor="password">Password</label>
                     <input id="password" name="password" type="password" required />
                 </div>
