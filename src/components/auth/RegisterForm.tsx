@@ -18,8 +18,8 @@ export default function RegisterForm() {
             <form action={register}>
 
                 <div className='flex align-middle justify-between'>
-                    <p>Accedi al tuo account</p>
-                    <button onClick={() => { setActiveForm(0) }}>X</button>
+                    <p>Registrati su Bench !</p>
+                    <button type="button" onClick={() => { setActiveForm(0) }}>X</button>
 
                 </div>
                 <div className='flex gap-6'>
@@ -32,7 +32,7 @@ export default function RegisterForm() {
                     <input id="password" name="password" type="password" required />
                 </div>
 
-                <button type="submit">Accedi</button>
+                <button type="submit">Registrati</button>
             </form>
         </div>
     )

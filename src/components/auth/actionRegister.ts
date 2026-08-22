@@ -19,8 +19,10 @@ export async function register(formData: FormData) {
 
   // 3. Gestisci il risultato
   if (error) {
-    console.error('Errore registrazione:', error.message)
-    return redirect('/register?error=1')
+    console.log("=== ERRORE DETTAGLIATO SUPABASE ===", error.message)
+
+    // Per testare, puoi anche passare il messaggio reale nell'URL:
+    return redirect(`/register?error=${encodeURIComponent(error.message)}`)
   }
 
   // Registrazione riuscita -> manda alla dashboard
