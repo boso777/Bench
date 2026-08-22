@@ -1,88 +1,72 @@
-import {
-  faArrowRight,
-  faFolderOpen,
-  faMicrochip,
-  faPlus,
-} from "@fortawesome/free-solid-svg-icons";
+'use client'
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Link from "next/link";
-import CardHome from "@/components/CardHome";
-import Card from "@/components/ProjectCard";
-import { createClient } from "@/utils/supabase/server";
-import CreateProjectModal from "@/components/CreateProjectModal";
-import CreateProjectFormLoader from "@/components/CreateProjectFormLoader";
+import { useState } from "react";
+import LoginForm from "@/components/auth/LoginForm";
+import RegisterForm from "@/components/auth/RegisterForm";
+import { useAuth } from './context/AuthContext';
 
-export default async function Home() {
-  const supabase = await createClient();
+export default function welcome() {
 
-  // Fetch dei dati da Supabase
-  const { data: projects } = await supabase.from("projects").select("*");
-  const { data: component } = await supabase.from("Component").select("*");
+  const { activeForm, setActiveForm } = useAuth();
+  const [isOpen, setIsOpen] = useState(false);
 
-  const projectCount = projects?.length || 0;
-  const componentCount = component?.length || 0;
+
+  const opener = (() => {
+    if (!isOpen) {
+      setIsOpen(true)
+    } else {
+      setIsOpen(false)
+    }
+  })
+
+
+
+  const renderForm = () => {
+    switch (activeForm) {
+      case 1:
+        return <LoginForm />
+        break;
+      case 2:
+        return <RegisterForm />
+        break;
+      default:
+        return null;
+    }
+  };
+
+
+
 
   return (
-    <div className="p-4 sm:p-8 lg:p-12 max-w-7xl mx-auto w-full">
+    <>
 
-      {/* Header section */}
-      <header className="mb-12 flex flex-col sm:flex-row justify-between sm:items-center gap-4">
-        <div>
-          <h1 className="text-4xl font-extrabold tracking-tight text-slate-100 font-sans">
-            Welcome to Bench
-          </h1>
-          <p className="text-slate-400 text-lg mt-1 font-light">
-            Il tuo spazio di lavoro per la progettazione elettronica
-          </p>
+      <div className="bg-linear-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90% h-screen">
+        <div className="w-full flex  align-middle justify-between gap-6 ">
+
+          <div className="flex align-middle justify-center gap-6 m-6">
+            <p>Logo</p>
+          </div>
+          <div className="flex align-middle justify-center gap-6 m-6">
+            <div className="flex border-amber-50 border-solid">
+              <button onClick={() => { setActiveForm(1) }} >Login</button>
+            </div>
+            <div className="flex border-amber-50 border-solid">
+              <button onClick={() => { setActiveForm(2) }} >Register</button>
+            </div>
+          </div>
+
+
+
         </div>
-        <CreateProjectModal>
-          <CreateProjectFormLoader />
-        </CreateProjectModal>
-      </header>
 
-      {/* KPI / Stats Section */}
-      <section className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
-        <CardHome
-          title="Progetti Totali"
-          totalProjects={projectCount}
-          icon={faFolderOpen}
-        />
-        <CardHome
-          title="Componenti"
-          totalProjects={componentCount}
-          icon={faMicrochip}
-        />
-      </section>
+        <div className="flex justify-center items-center h-3/4">
+          <p className="font-bold text-6xl">Bench</p>
+        </div>
 
-      {/* Title Progetti Recenti */}
-      <div className="flex justify-between items-center mb-6 w-full">
-        <h2 className="text-2xl font-bold text-white">Progetti Recenti</h2>
-        <Link
-          href="/projects"
-          className="text-blue-400 hover:text-blue-300 text-sm font-medium flex items-center gap-1 group transition-colors"
-        >
-          <span>Vedi tutti</span>
-          <FontAwesomeIcon
-            icon={faArrowRight}
-            className="text-xs group-hover:translate-x-1 transition-transform"
-          />
-        </Link>
-      </div>
 
-      {/* Griglia Card Unica e Responsive */}
-      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
-        {projects?.map((project) => (
-          <Card
-            key={project.id}
-            id={project.id}
-            title={project.title}
-            description={project.description}
-            img={project.cover_img}
-          />
-        ))}
-      </section>
+      </div >
 
-    </div>
-  );
+      {renderForm()}
+    </>
+  )
 }

@@ -51,8 +51,8 @@ export default function CreateComponentForm({ onClose }: CreateComponentFormProp
         formState: { errors },
     } = useForm<Inputs>();
 
-    // Helper per l'upload e il recupero dell'URL pubblico
-
+    //funzione generica che gestisce l'upload di qualsiasi file in uno specifico bucket di Supabase, rinomina il file con timestamp e lo rende pubblico
+    //returna l'url pubblico del file
     const uploadFile = async (bucket: string, file: File) => {
         const fileExt = file.name.split('.').pop();
         const fileName = `${Date.now()}_${Math.random().toString(36).substring(2)}.${fileExt}`;
@@ -89,11 +89,11 @@ export default function CreateComponentForm({ onClose }: CreateComponentFormProp
                 .from('Component')
                 .insert({
                     Name: formData.name,
-                    Category: Number(formData.category),
-                    Cost: formData.cost ? Number(formData.cost) : 0,
-                    Quantity: formData.quantity ? Number(formData.quantity) : 0,
-                    ImageUrl: imageUrl,
-                    DatasheetUrl: datasheetUrl,
+                    Category: formData.category,
+                    Cost: formData.cost,
+                    Quantity: formData.quantity,
+                    Cover_img: imageUrl,
+                    Datasheet: datasheetUrl,
                 })
                 .select();
 
