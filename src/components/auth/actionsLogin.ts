@@ -3,7 +3,7 @@
 import { redirect } from 'next/navigation'
 import { createClient } from '@/utils/supabase/server'
 
-export async function Login(formData: FormData) {
+export async function Login(prevState: any, formData: FormData) {
 
     const supabase = await createClient()
 
@@ -19,8 +19,8 @@ export async function Login(formData: FormData) {
 
     // 3. Gestisci il risultato
     if (error) {
-        console.error('Errore autenticazione:', error.message)
-        return redirect('/register?error=1')
+
+        return { error: error.message }
     }
 
     // Registrazione riuscita -> manda alla dashboard

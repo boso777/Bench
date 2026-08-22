@@ -3,19 +3,19 @@
 import { register } from './actionRegister'
 
 import { useAuth } from '../../app/context/AuthContext'
-
+import { useActionState } from 'react'
 export default function RegisterForm() {
 
 
     const { activeForm, setActiveForm } = useAuth();
-
+    const [state, actionsRegister, isPending] = useActionState(register, null)
     return (
         <div className='fixed inset-0 z-50 flex items-center justify-center p-4 backdrop-blur-2xl bg-black/30 flex flex-col'>
 
 
 
 
-            <form action={register}>
+            <form action={actionsRegister}>
 
                 <div className='flex align-middle justify-between'>
                     <p>Registrati su Bench !</p>
@@ -34,6 +34,12 @@ export default function RegisterForm() {
 
                 <button type="submit">Registrati</button>
             </form>
+
+            {state?.error && (
+                <div className='p-3 bg-red-500/10 border border-red-500/50 rounded-lg text-red-400 text-sm text-center'>
+                    {state.error}
+                </div>
+            )}
         </div>
     )
 }

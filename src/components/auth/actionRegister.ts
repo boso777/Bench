@@ -3,7 +3,9 @@
 import { redirect } from 'next/navigation'
 import { createClient } from '@/utils/supabase/server'
 
-export async function register(formData: FormData) {
+export async function register(prevState: any, formData: FormData) {
+
+
 
   const supabase = await createClient()
 
@@ -19,10 +21,7 @@ export async function register(formData: FormData) {
 
   // 3. Gestisci il risultato
   if (error) {
-    console.log("=== ERRORE DETTAGLIATO SUPABASE ===", error.message)
-
-    // Per testare, puoi anche passare il messaggio reale nell'URL:
-    return redirect(`/register?error=${encodeURIComponent(error.message)}`)
+    return { error: error.message }
   }
 
   // Registrazione riuscita -> manda alla dashboard
